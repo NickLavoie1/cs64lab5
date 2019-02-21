@@ -115,7 +115,47 @@ Exit:
 # COPYFROMHERE - DO NOT REMOVE THIS LINE
 
 PrintReverse:
-    #TODO: write your code here, $a0 stores the address of the array, $a1 stores the length of the array
+    add $t7, $zero, $a1
+	add $t0, $zero, $a0
+	addi $t1, $a1, -1
+	sll $t1, $t1, 2
+	add $t1, $a0, $t1
 
-    # Do not remove this line
+	li $t2, 4
+	multi $t7, $t2
+	mflo $t2
+	subu $t3, $zero, $t2
+	add $sp, $sp, $t3
+
+	sw $s0, 0($sp)
+	sw $s1, 4($sp)
+	sw $s2, 8($sp)
+	sw $s3, 12($sp)
+	sw $ra, 16($sp)
+	
+	move $s0, $a0
+	move $s1, $a1
+	move $s2, $t1
+	move $s3, $t7
+
+printLoop:
+	li $v0, 1
+	lw $a0, 0($s2)
+	syscall
+	jal ConventionCheck
+	
+	addi $s2, $s2, -4
+	addi $s3, $s3, -1
+
+	bne $zero, &s3, printLoop
+
+exitLoop:
+	lw $s0, 0($sp)
+	lw $s1, 4($sp)
+	lw $s2, 8($sp)
+	lw $s3, 12($sp)
+	lw $ra, 16($sp)
+
+	addu $sp, $sp, $t2
+
     jr      $ra
