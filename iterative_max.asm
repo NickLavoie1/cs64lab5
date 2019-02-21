@@ -115,7 +115,65 @@ Exit:
 # COPYFROMHERE - DO NOT REMOVE THIS LINE
 
 IterativeMax:
-    #TODO: write your code here, $a0 stores the address of the array, $a1 stores the length of the array
+    add $t0, $zero, $a0
+	add $t7, $zero, $a1
+
+	li $t1, 0
+	lw $t2, 0($t0)
+
+	addiu $sp, $sp, -32
+	sw $s0, 0($sp)
+	sw $s1, 4($sp)
+	sw $s2, 8($sp)
+	sw $s3, 12($sp)
+	sw $s4, 16($sp)
+	sw $s5, 20($sp)
+	sw $s6, 24($sp)
+	sw $ra, 28($sp)
+
+	move $s0, $t0
+	move $s1, $t1
+	move $s2, $t2
+	move $s3, $t3
+	move $s4, $t7
+	move $s5, $a0
+	move $s6, $a1
+
+Loop:
+	lw $s3, 0($s0)
+	li $v0, 1
+	move $a0, $s3
+	syscall
+	li $v0, 4
+	la $a0, newline
+	syscall
+
+	blt $s3, $s2, False
+	
+	move $s2, $s3
+
+False:
+	li $v0, 1
+	move $a0, $s2
+	syscall
+
+	jal ConventionCheck
+
+	addiu $s0, $s0, 4
+	addiu $s1, $s1, 1
+
+	bne $s4, $s1, Loop
+
+	lw $s0, 0($sp)
+	lw $s1, 4($sp)
+	lw $s2, 8($sp)
+	lw $s3, 12($sp)
+	lw $s4, 16($sp)
+	lw $s5, 20($sp)
+	lw $s6, 24($sp)
+	lw $ra, 28($sp)
+
+	addiu $sp, $sp, 32
 
     # Do not remove this line
     jr      $ra
