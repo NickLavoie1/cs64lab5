@@ -188,12 +188,13 @@ doSwap:
 	la $t3, myArray
 	la $t4, 32($t3)
 
+
 Loop:
 	#Get content 
 	lw $t5, 0($t3)
-	lw $t6, 0($t7)
-	sw $t5, 0($t3)
-	sw $t6, 0($t7)
+	lw $t6, 0($t4)
+	sw $t5, 0($t4)
+	sw $t6, 0($t3)
 
 	#Change the conditionals and the indexes 
 	addi $t0, $t0, 1
@@ -203,6 +204,6 @@ Loop:
 
 	#If != 4, loop back, else end function
 	bne $t0, $t2, Loop
-        
+      
         # do not remove this line
         jr $ra
