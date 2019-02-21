@@ -115,12 +115,15 @@ Exit:
 # COPYFROMHERE - DO NOT REMOVE THIS LINE
 
 IterativeMax:
-    add $t0, $zero, $a0
+	#Put length and address into registers
+	add $t0, $zero, $a0
 	add $t7, $zero, $a1
 
+	#Create iterator and max value
 	li $t1, 0
 	lw $t2, 0($t0)
 
+	#Stack
 	addiu $sp, $sp, -32
 	sw $s0, 0($sp)
 	sw $s1, 4($sp)
@@ -140,28 +143,33 @@ IterativeMax:
 	move $s6, $a1
 
 Loop:
+	#Get value at first element
 	lw $s3, 0($s0)
 	li $v0, 1
 	move $a0, $s3
+	
 	syscall
 	li $v0, 4
 	la $a0, newline
 	syscall
 
+	#Compare
 	blt $s3, $s2, False
 	
 	move $s2, $s3
 
 False:
+	#Print
 	li $v0, 1
 	move $a0, $s2
 	syscall
 
 	jal ConventionCheck
 
+	#Increment
 	addiu $s0, $s0, 4
 	addiu $s1, $s1, 1
-
+	#Continue loop else move on 
 	bne $s4, $s1, Loop
 
 	lw $s0, 0($sp)
@@ -173,6 +181,7 @@ False:
 	lw $s6, 24($sp)
 	lw $ra, 28($sp)
 
+	#Pointer back to the end
 	addiu $sp, $sp, 32
 
     # Do not remove this line
